@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using MoriGame.Configs;
 using MoriGame.Economy;
 using MoriGame.Zombies;
 using NUnit.Framework;
@@ -178,6 +179,46 @@ namespace MoriGame.Tests.EditMode
             Assert.AreEqual(2f, ZombieAgent.DistanceToPath(new UnityEngine.Vector3(5f, 0f, 2f), corners), 0.0001f);
             Assert.Greater(ZombieAgent.DistanceToPath(new UnityEngine.Vector3(5f, 0f, 2.01f), corners), 2f);
             Assert.AreEqual(3f, ZombieAgent.DistanceToPath(new UnityEngine.Vector3(13f, 0f, 0f), corners), 0.0001f);
+        }
+
+        [TestCase("Normal", true)]
+        [TestCase("Runner", false)]
+        [TestCase("Spitter", false)]
+        [TestCase("ShieldGuard", false)]
+        [TestCase("Brute", false)]
+        [TestCase("Overseer", false)]
+        public void 非致命受击动画_仅普通僵尸触发(string zombieId, bool expectDamageTrigger)
+        {
+            var controllerPath = "Assets/_MoriGame/Tests/EditMode/ZombieHitReaction_" +
+                                 System.Guid.NewGuid().ToString("N") + ".controller";
+            var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
+            controller.AddParameter("Damage", AnimatorControllerParameterType.Trigger);
+            var zombie = new GameObject("HitReaction_" + zombieId);
+            var config = ScriptableObject.CreateInstance<ZombieConfig>();
+            try
+            {
+                var visual = new GameObject("Model");
+                visual.transform.SetParent(zombie.transform, false);
+                var animator = visual.AddComponent<Animator>();
+                animator.runtimeAnimatorController = controller;
+                animator.Update(0f);
+                var agent = zombie.AddComponent<ZombieAgent>();
+                agent.animator = animator;
+                config.zombieId = zombieId;
+                agent.config = config;
+                typeof(ZombieAgent).GetField("<Vitals>k__BackingField",
+                        BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(agent, new ZombieVitals(100, 2f, 4, 1));
+
+                Assert.IsFalse(agent.ApplyHit(1, false), "测试命中必须是非致命命中");
+                Assert.AreEqual(expectDamageTrigger, animator.GetBool("Damage"), zombieId);
+            }
+            finally
+            {
+                Object.DestroyImmediate(zombie);
+                Object.DestroyImmediate(config);
+                UnityEditor.AssetDatabase.DeleteAsset(controllerPath);
+            }
         }
 
         [Test]

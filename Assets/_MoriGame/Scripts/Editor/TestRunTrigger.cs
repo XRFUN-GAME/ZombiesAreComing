@@ -49,6 +49,8 @@ namespace MoriGame.Editor
         private const string PreviewUiDone = "Builds/preview-startui.done";
         private const string FixedUiPreviewTrigger = "Builds/preview-fixedui.trigger";
         private const string FixedUiPreviewDone = "Builds/preview-fixedui.done";
+        private const string BrandTrigger = "Builds/brand-assets.trigger";
+        private const string BrandDone = "Builds/brand-assets.done";
         private const string BuildTrigger = "Builds/build-apk.trigger";
         private const string BuildDone = "Builds/build-apk.done";
         private const string ReadyFile = "Builds/trigger-watcher.ready";
@@ -72,6 +74,7 @@ namespace MoriGame.Editor
         private static bool tutorialBuildPrimed;
         private static bool previewUiPrimed;
         private static bool fixedUiPreviewPrimed;
+        private static bool brandPrimed;
 
         static TestRunTrigger()
         {
@@ -162,6 +165,10 @@ namespace MoriGame.Editor
             {
                 RunFixedUiPreview();
             }
+            else if (File.Exists(BrandTrigger))
+            {
+                RunBrandAssets();
+            }
             else if (File.Exists(BuildTrigger))
             {
                 RunBuild();
@@ -183,6 +190,7 @@ namespace MoriGame.Editor
                 tutorialBuildPrimed = false;
                 previewUiPrimed = false;
                 fixedUiPreviewPrimed = false;
+                brandPrimed = false;
             }
         }
 
@@ -464,6 +472,28 @@ namespace MoriGame.Editor
             catch (Exception e)
             {
                 Done(TutorialBuildDone, "EXITCODE=1 " + OneLine(e));
+            }
+        }
+
+        private static void RunBrandAssets()
+        {
+            if (!brandPrimed)
+            {
+                brandPrimed = true;
+                ForceImportScripts();
+                return;
+            }
+            SafeDelete(BrandTrigger);
+            SafeDelete(BrandDone);
+            try
+            {
+                BrandArtSetup.Run();
+                Done(BrandDone, "EXITCODE=0 " + Stamp());
+            }
+            catch (Exception e)
+            {
+                Done(BrandDone, "EXITCODE=1 " + OneLine(e));
+                Debug.LogException(e);
             }
         }
 

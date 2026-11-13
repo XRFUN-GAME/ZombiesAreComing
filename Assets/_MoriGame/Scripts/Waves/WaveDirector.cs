@@ -345,7 +345,15 @@ namespace MoriGame.Waves
             {
                 MatchResultStore.Save(recorder, score);
             }
+            ClearRemainingZombies();
             SettlementPanel.Show(font, recorder, score);
+        }
+
+        private void ClearRemainingZombies()
+        {
+            spawnQueue.Clear();
+            pendingOverseer = false;
+            pool?.ClearAll();
         }
 
         private static void DisableIfExists<T>() where T : Behaviour

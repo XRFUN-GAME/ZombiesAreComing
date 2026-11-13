@@ -518,7 +518,7 @@ namespace MoriGame.Zombies
             ShowHitFeedback(applied, hitWeakpoint, sourcePosition); // 头顶血条 + 伤害数字（2026-11-12 WW UI）
             if (IsAlive)
             {
-                if (animator != null)
+                if (animator != null && config.zombieId == "Normal")
                 {
                     animator.SetTrigger(DamageId);
                 }

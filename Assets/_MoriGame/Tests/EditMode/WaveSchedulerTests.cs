@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Reflection;
 using MoriGame.Configs;
 using MoriGame.Waves;
+using MoriGame.Zombies;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace MoriGame.Tests.EditMode
 {
@@ -144,6 +147,48 @@ namespace MoriGame.Tests.EditMode
 
             scheduler.Tick(1f); // 结束后再 tick 不重复触发
             Assert.AreEqual(1, endedCount);
+        }
+
+        [Test]
+        public void 终局清场_活跃僵尸回池且待生成请求清空()
+        {
+            const BindingFlags instancePrivate = BindingFlags.Instance | BindingFlags.NonPublic;
+            var poolGo = new GameObject("EndMatchPool");
+            var directorGo = new GameObject("EndMatchDirector");
+            try
+            {
+                var pool = poolGo.AddComponent<ZombiePool>();
+                var director = directorGo.AddComponent<WaveDirector>();
+                var active = (List<ZombieAgent>)typeof(ZombiePool).GetField("active", instancePrivate).GetValue(pool);
+                var inactive = (List<ZombieAgent>)typeof(ZombiePool).GetField("inactive", instancePrivate).GetValue(pool);
+                var first = new GameObject("ActiveNormal");
+                var second = new GameObject("ActiveBrute");
+                first.transform.SetParent(poolGo.transform, false);
+                second.transform.SetParent(poolGo.transform, false);
+                active.Add(first.AddComponent<ZombieAgent>());
+                active.Add(second.AddComponent<ZombieAgent>());
+                var queue = (List<string>)typeof(WaveDirector).GetField("spawnQueue", instancePrivate).GetValue(director);
+                queue.Add("Normal");
+                queue.Add("Overseer");
+                typeof(WaveDirector).GetField("pool", instancePrivate).SetValue(director, pool);
+                typeof(WaveDirector).GetField("pendingOverseer", instancePrivate).SetValue(director, true);
+
+                var clear = typeof(WaveDirector).GetMethod("ClearRemainingZombies", instancePrivate);
+                Assert.NotNull(clear);
+                clear.Invoke(director, null);
+
+                Assert.AreEqual(0, pool.ActiveCount);
+                Assert.AreEqual(2, inactive.Count, "清场只回池，不走击杀结算");
+                Assert.IsFalse(first.activeSelf);
+                Assert.IsFalse(second.activeSelf);
+                Assert.AreEqual(0, queue.Count, "结算后不得再激活已排队的僵尸");
+                Assert.IsFalse((bool)typeof(WaveDirector).GetField("pendingOverseer", instancePrivate).GetValue(director));
+            }
+            finally
+            {
+                Object.DestroyImmediate(directorGo);
+                Object.DestroyImmediate(poolGo);
+            }
         }
 
         [Test]

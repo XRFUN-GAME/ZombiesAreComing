@@ -71,6 +71,10 @@ namespace MoriGame.Ui
                 panel.SetParent(null, true);
             }
             panel.SetPositionAndRotation(worldAnchor.transform.position, worldAnchor.transform.rotation);
+            if (worldAnchor.TryGetPreviewWorldScale(out var previewScale))
+            {
+                panel.localScale = previewScale;
+            }
             return true;
         }
 

@@ -36,7 +36,6 @@ namespace MoriGame.Shop
         {
             var rt = (RectTransform)transform;
             rt.sizeDelta = new Vector2(widthMeters * 100f, heightMeters * 100f);
-            transform.localScale = Vector3.one * 0.01f;
             UiTheme.PlaceFixedPanel(transform, WorldUiPanels.StatusHud,
                 yawOffsetDegrees, distanceMeters, heightAboveAnchor);
             if (label != null)

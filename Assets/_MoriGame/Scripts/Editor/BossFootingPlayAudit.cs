@@ -157,7 +157,7 @@ namespace MoriGame.Editor
                 yield return null;
             }
             report.AppendLine($"{id(zombie)} {phase} SUMMARY samples={samples} bakedMin={min:F4} bakedMax={max:F4} " +
-                              $"boundsMin={boundsMin:F4} boundsMax={boundsMax:F4} death={death}");
+                              $"boundsMin={boundsMin:F4} boundsMax={boundsMax:F4}");
         }
 
         private static string id(ZombieAgent zombie)
@@ -210,4 +210,10 @@ namespace MoriGame.Editor
                 File.WriteAllText(ReportPath, report.ToString());
             }
             File.WriteAllText(DonePath, "EXITCODE=" + (ok ? "0" : "1") + " " +
-                                      details.Replace('\n', ' ').Replace('\r', ' ') +
+                                      details.Replace('\n', ' ').Replace('\r', ' ') + " " +
+                                      DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            Debug.Log("[MoriGame] Boss 贴地采样：" + (ok ? "完成 " : "失败 ") + details);
+            EditorApplication.isPlaying = false;
+        }
+    }
+}

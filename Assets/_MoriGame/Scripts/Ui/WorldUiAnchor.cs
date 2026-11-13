@@ -10,15 +10,31 @@ namespace MoriGame.Ui
         public string panelId;
         public GameObject previewContent;
 
+        private Vector3 previewWorldScale;
+        private bool hasPreviewWorldScale;
+
         private void Awake()
         {
             if (!Application.isPlaying || previewContent == null)
             {
                 return;
             }
+            previewWorldScale = previewContent.transform.lossyScale;
+            hasPreviewWorldScale = true;
             previewContent.SetActive(false);
             Destroy(previewContent);
             previewContent = null;
+        }
+
+        public bool TryGetPreviewWorldScale(out Vector3 scale)
+        {
+            if (previewContent != null)
+            {
+                scale = previewContent.transform.lossyScale;
+                return true;
+            }
+            scale = previewWorldScale;
+            return hasPreviewWorldScale;
         }
 
         public static WorldUiAnchor Find(Scene scene, string panelId)
@@ -59,5 +75,6 @@ namespace MoriGame.Ui
         public const string TutorialGraduate = "tutorial.graduate";
         public const string TutorialRedo = "tutorial.redo";
         public const string TutorialSkip = "tutorial.skip";
+        public const string BrandLogo = "brand.logo";
     }
 }

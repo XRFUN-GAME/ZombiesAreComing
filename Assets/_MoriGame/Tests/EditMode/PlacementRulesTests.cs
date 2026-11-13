@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using MoriGame.Build;
 using MoriGame.Configs;
+using MoriGame.Shop;
 using MoriGame.Territory;
 using MoriGame.Ui;
 using NUnit.Framework;
@@ -450,6 +451,54 @@ namespace MoriGame.Tests.EditMode
             {
                 Object.DestroyImmediate(panelGo);
                 Object.DestroyImmediate(anchorGo);
+            }
+        }
+
+        [Test]
+        public void 世界固定面板_缩放与编辑器预览一致()
+        {
+            var anchorGo = new GameObject("ScaledWorldAnchor");
+            var previewGo = new GameObject("ScaledPreview");
+            var panelGo = new GameObject("ScaledRuntimePanel");
+            try
+            {
+                anchorGo.transform.localScale = Vector3.one * 3f;
+                var anchor = anchorGo.AddComponent<WorldUiAnchor>();
+                anchor.panelId = "test.scaled_panel";
+                previewGo.transform.SetParent(anchorGo.transform, false);
+                previewGo.transform.localScale = Vector3.one * 0.02f;
+                anchor.previewContent = previewGo;
+                panelGo.transform.localScale = Vector3.one * 0.02f;
+
+                Assert.IsTrue(UiTheme.PlaceFixedPanel(panelGo.transform, anchor.panelId, 0f, 1f, 1f));
+                Assert.Less(Vector3.Distance(Vector3.one * 0.06f, panelGo.transform.lossyScale), 0.00001f,
+                    "运行时世界缩放=锚点手调倍率×预览原始缩放");
+            }
+            finally
+            {
+                Object.DestroyImmediate(panelGo);
+                Object.DestroyImmediate(anchorGo);
+            }
+        }
+
+        [Test]
+        public void 状态HUD_保留场景手调缩放()
+        {
+            var go = new GameObject("ScaledStatusHud", typeof(RectTransform), typeof(Canvas));
+            try
+            {
+                var anchor = go.AddComponent<WorldUiAnchor>();
+                anchor.panelId = WorldUiPanels.StatusHud;
+                var hud = go.AddComponent<StatusHud>();
+                go.transform.localScale = Vector3.one * 0.1f;
+
+                hud.BuildEditorPreview();
+
+                Assert.Less(Vector3.Distance(Vector3.one * 0.1f, go.transform.localScale), 0.00001f);
+            }
+            finally
+            {
+                Object.DestroyImmediate(go);
             }
         }
 

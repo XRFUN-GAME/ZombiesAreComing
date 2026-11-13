@@ -39,6 +39,7 @@ namespace MoriGame.Tutorial
         private static readonly Quaternion DefaultPreviewRotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
         private Vector3 previewPositionOffset;
         private Quaternion previewRotationOffset = Quaternion.identity;
+        private Vector3 previewScale = Vector3.one;
         private Vector3 confirmPreviewPosition;
         private Quaternion confirmPreviewRotation = Quaternion.identity;
         private bool hasConfirmPreviewTransform;
@@ -87,6 +88,7 @@ namespace MoriGame.Tutorial
             }
             previewPositionOffset = panel.position - DefaultPreviewPosition;
             previewRotationOffset = Quaternion.Inverse(DefaultPreviewRotation) * panel.rotation;
+            previewScale = panel.lossyScale;
             var confirm = panel.Find("ConfirmQuit");
             if (confirm == null)
             {
@@ -116,6 +118,7 @@ namespace MoriGame.Tutorial
             choicePanel = new GameObject("ChoicePanel");
             choicePanel.transform.SetParent(uiOwner.transform, false);
             PlacePanel(); // 编辑器预览：固定取景位；运行时 Update 每帧按真实头部重定位
+            choicePanel.transform.localScale = previewScale;
 
             var graduated = TutorialGraduation.IsGraduated();
             options = new System.Collections.Generic.List<MenuOption>();

@@ -1,0 +1,53 @@
+# Unity 标准忽略
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# IDE / 编辑器
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity 生成的崩溃/转储
+sysinfo.txt
+*.stacktrace
+crashlytics-build.properties
+
+# 安卓 / 签名密钥（敏感！绝不入库）
+*.keystore
+*.jks
+*.pem
+*.key
+
+# 本地工具配置（可能含密钥）
+.mcp.json
+.pico-env.json
+.pico/
+.claude/
+.codepilot-uploads/
+
+# 系统垃圾
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 废弃备份目录
+Deprecated_*/

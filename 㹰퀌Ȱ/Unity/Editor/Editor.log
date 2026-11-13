@@ -1,0 +1,33 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to the License Client on channel: "LicenseClient-Administrator" at "2026-10-30T03:34:36.0823724Z"
+[Licensing::Client] Error: Code 10 while verifying Licensing Client signature (process Id: 29576, path: "D:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] Error: LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              55daa59f7b49429587f856f2389c56e2
+  Correlation Id:          e47db190ed360945e3a8fd91076be353
+  External correlation Id: 4627065487416766941
+  Machine Id:              aDbOjZ9UfXkMS2lkOXqcQREckhc=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Administrator" (connect: 0.00s, validation: 0.01s, handshake: 0.03s)
+[Licensing::IpcConnector] Successfully connected to the License Notification on channel: "LicenseClient-Administrator-notifications" at "2026-10-30T03:34:36.1213435Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully updated license
+Built from '6000.0/staging' branch; Version is '6000.0.49f1 (840e0a9776d9) revision 8654346'; Using compiler version '193933523'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'zh' Physical Memory: 65349 MB
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "F4-W4CX-7RQR-W3P7-GWFM-XXXX"
+[Licensing::Module] Serial number assigned to: "ewogICJzdWJzR3JvdXAiIDogInVuaXR5IGVkaXRvciIsCiAgIm5hbWVzcGFjZSIgOiAidW5pdHlfZWRpdG9yIiwKICAidHlwZSIgOiAiRURJVE9SIiwKICAidGFnIiA6ICJVbml0eVBlcnNvbmFsXXXX"
+BatchMode: 0, IsHumanControllingUs: 1, StartBugReporterOnCrash: 1, Is64bit: 1, IsPro: 0
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "F4-W4CX-7RQR-W3P7-GWFM-XXXX"
+[Licensing::Module] Serial number assigned to: "ewogICJzdWJzR3JvdXAiIDogInVuaXR5IGVkaXRvciIsCiAgIm5hbWVzcGFjZSIgOiAidW5pdHlfZWRpdG9yIiwKICAidHlwZSIgOiAiRURJVE9SIiwKICAidGFnIiA6ICJVbml0eVBlcnNvbmFsXXXX"
+
+COMMAND LINE ARGUMENTS:
+D:\Unity\6000.0.49f1\Editor\Unity.exe
+-projectPath
+F:/morisinglegame
+-buildTarget
+Android
+Successfully changed project path to: F:/morisinglegame
+F:/morisinglegame
+Exiting without the bug reporter. Application will terminate with return code 0

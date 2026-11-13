@@ -1,0 +1,2 @@
+CREATE Assets/_MoriGame/Configs/Player/PlayerConfig.asset
+CREATE Assets/_MoriGame/Configs/Devices/CoreDeviceConfig.asset

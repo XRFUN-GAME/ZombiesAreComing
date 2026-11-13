@@ -1,0 +1,20 @@
+{
+    "name": "MoriGame.Editor",
+    "rootNamespace": "MoriGame.Editor",
+    "references": [
+        "MoriGame",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "ByteDance.PICO.XR",
+        "Unity.XR.CoreUtils",
+        "Unity.XR.Management",
+        "Unity.XR.Management.Editor",
+        "Unity.AI.Navigation",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "autoReferenced": false
+}
